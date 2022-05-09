@@ -48,7 +48,7 @@ func (b *BST[T]) add(n *node[T], e T) *node[T] {
 		return newNode(e)
 	} else if e.Less(n.element) {
 		n.left = b.add(n.left, e)
-	} else if !e.Less(n.element) {
+	} else if e.Grater(n.element) {
 		n.right = b.add(n.right, e)
 	}
 
@@ -167,4 +167,181 @@ func (b *BST[T]) LevelTraversal(fn func(e T)) {
 			queue = append(queue, cur.right)
 		}
 	}
+}
+
+func (b *BST[T]) Minimum() *node[T] {
+	if b.root == nil {
+		return nil
+	}
+	return b.minimum(b.root)
+}
+
+func (b *BST[T]) minimum(n *node[T]) *node[T] {
+	if n.left == nil {
+		return n
+	}
+	return b.minimum(n.left)
+}
+
+func (b *BST[T]) MinimumNR() *node[T] {
+	if b.root == nil {
+		return nil
+	}
+
+	cur := b.root
+	for cur.left != nil {
+		cur = cur.left
+	}
+
+	return cur
+}
+
+func (b *BST[T]) Maximum() *node[T] {
+	if b.root == nil {
+		return nil
+	}
+	return b.maximum(b.root)
+}
+
+func (b *BST[T]) maximum(n *node[T]) *node[T] {
+	if n.right == nil {
+		return n
+	}
+	return b.maximum(n.right)
+}
+
+func (b *BST[T]) MaximumNR() *node[T] {
+	if b.root == nil {
+		return nil
+	}
+
+	cur := b.root
+	for cur.right != nil {
+		cur = cur.right
+	}
+
+	return cur
+}
+
+func (b *BST[T]) RemoveMin() T {
+	var ret T
+
+	minNode := b.Minimum()
+	if minNode == nil {
+		return ret
+	}
+
+	ret = minNode.element
+
+	b.root = b.removeMin(b.root)
+
+	return ret
+}
+
+func (b *BST[T]) removeMin(n *node[T]) *node[T] {
+	if n.left == nil {
+		rightNode := n.right
+		n.right = nil
+		b.size--
+		return rightNode
+	}
+
+	n.left = b.removeMin(n.left)
+	return n
+}
+
+func (b *BST[T]) RemoveMax() T {
+	var ret T
+
+	maxNode := b.Maximum()
+	if maxNode == nil {
+		return ret
+	}
+
+	ret = maxNode.element
+
+	b.root = b.removeMax(b.root)
+
+	return ret
+}
+
+func (b *BST[T]) removeMax(n *node[T]) *node[T] {
+	if n.right == nil {
+		leftNode := n.left
+		n.left = nil
+		b.size--
+		return leftNode
+	}
+
+	n.right = b.removeMax(n.right)
+	return n
+}
+
+func (b *BST[T]) Remove(e T) {
+	b.root = b.remove(b.root, e)
+}
+
+func (b *BST[T]) remove(n *node[T], e T) *node[T] {
+	if n == nil {
+		return nil
+	}
+
+	if e.Less(n.element) {
+		n.left = b.remove(n.left, e)
+		return n
+	} else if e.Grater(n.element) {
+		n.right = b.remove(n.right, e)
+		return n
+	} else {
+		if n.left == nil {
+			rightNode := n.right
+			n.right = nil
+			b.size--
+			return rightNode
+		} else if n.right == nil {
+			leftNode := n.left
+			n.left = nil
+			b.size--
+			return leftNode
+		}
+
+		successor := b.minimum(n.right)
+		successor.right = b.removeMin(n.right)
+		successor.left = n.left
+
+		n.left = nil
+		n.right = nil
+
+		return successor
+	}
+}
+
+func (b *BST[T]) Floor(e T) T {
+	var ret T
+
+	// TODO
+
+	return ret
+}
+
+func (b *BST[T]) Ceil(e T) T {
+	var ret T
+
+	// TODO
+
+	return ret
+}
+
+func (b *BST[T]) Rank(e T) int {
+	// TODO
+
+	return 0
+}
+
+func (b *BST[T]) Select(index int) T {
+	var ret T
+
+	// TODO
+
+	return ret
 }
