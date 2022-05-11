@@ -42,7 +42,7 @@ func (l *LinkedList[T]) IsEmpty() bool {
 
 func (l *LinkedList[T]) Add(index int, e T) error {
 	if index < 0 || index > l.size {
-		return errors.New("add failed. illegal index")
+		return errors.New("illegal index")
 	}
 
 	prev := l.dummyHead
@@ -69,7 +69,7 @@ func (l *LinkedList[T]) AddLast(e T) {
 func (l *LinkedList[T]) Get(index int) (T, error) {
 	var ret T
 	if index < 0 || index > l.size {
-		return ret, errors.New("add failed. illegal index")
+		return ret, errors.New("illegal index")
 	}
 
 	cur := l.dummyHead.next
@@ -90,7 +90,7 @@ func (l *LinkedList[T]) GetLast() (T, error) {
 
 func (l *LinkedList[T]) Set(index int, e T) error {
 	if index < 0 || index > l.size {
-		return errors.New("add failed. illegal index")
+		return errors.New("illegal index")
 	}
 
 	cur := l.dummyHead.next
@@ -128,4 +128,30 @@ func (l *LinkedList[T]) String() string {
 	sbu.WriteString("nil")
 
 	return sbu.String()
+}
+
+func (l *LinkedList[T]) Remove(index int) (T, error) {
+	var ret T
+	if index < 0 || index > l.size {
+		return ret, errors.New("illegal index")
+	}
+
+	prev := l.dummyHead
+	for i := 0; i < index; i++ {
+		prev = prev.next
+	}
+
+	n := prev.next
+	prev.next = n.next
+	n.next = nil
+
+	return n.e, nil
+}
+
+func (l *LinkedList[T]) RemoveFirst() (T, error) {
+	return l.Remove(0)
+}
+
+func (l *LinkedList[T]) RemoveLast() (T, error) {
+	return l.Remove(l.size - 1)
 }
