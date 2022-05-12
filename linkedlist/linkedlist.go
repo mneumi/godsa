@@ -155,3 +155,19 @@ func (l *LinkedList[T]) RemoveFirst() (T, error) {
 func (l *LinkedList[T]) RemoveLast() (T, error) {
 	return l.Remove(l.size - 1)
 }
+
+func (l *LinkedList[T]) RemoveElement(e T) {
+	prev := l.dummyHead
+	for prev.next != nil {
+		if prev.next.e.Equal(e) {
+			break
+		}
+		prev = prev.next
+	}
+
+	if prev.next != nil {
+		delNode := prev.next
+		prev.next = delNode.next
+		delNode.next = nil
+	}
+}

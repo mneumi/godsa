@@ -20,7 +20,7 @@ func newNode[T common.Element[T]](e T) *node[T] {
 
 type BST[T common.Element[T]] struct {
 	root *node[T]
-	size int32
+	size int
 }
 
 func New[T common.Element[T]]() *BST[T] {
@@ -30,7 +30,7 @@ func New[T common.Element[T]]() *BST[T] {
 	}
 }
 
-func (b *BST[T]) Size() int32 {
+func (b *BST[T]) Size() int {
 	return b.size
 }
 
